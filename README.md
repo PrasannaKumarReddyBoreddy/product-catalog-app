@@ -14,7 +14,7 @@ To get started with the project, follow the steps below.
 ### Installation
 
 1. Clone the repository:
-   - git clone 
+   - git clone https://github.com/PrasannaKumarReddyBoreddy/product-catalog-app.git
 
 2. Change to the project directory:
    - cd product-catalog-app

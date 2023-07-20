@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Product } from "../models/interfaces/product-card-props";
 import { Button, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
@@ -22,7 +22,7 @@ const ProductDetails: React.FC = () => {
       })
       .catch((error) => {
         setLoading(true);
-        console.error("Error fetching products:", error);
+        console.error("Error fetching product details:", error);
       });
   };
 
