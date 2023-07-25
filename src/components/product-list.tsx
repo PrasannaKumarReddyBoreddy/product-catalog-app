@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
-import { Product } from "../models/interfaces/product-card-props";
+import { Product, ProductState } from "../models/interfaces/product-card-props";
 import axios from "axios";
 import { Container, Row, Col, Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ProductCard from "./product-card";
+import { useDispatch, useSelector } from 'react-redux';
+import { failure, requist, success } from "../redux/store";
 
 const ProductList: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
   const [CatagoryList, setCatagoryList] = useState<Set<string | null>>(new Set());
+
+  const dispatch = useDispatch();
+  const products: Product[] = useSelector((state: ProductState)=>state.products);
+  const loading = useSelector((state: ProductState)=> state.loading);
 
   useEffect(() => {
     getProducts();
@@ -17,12 +21,12 @@ const ProductList: React.FC = () => {
 
   const getProducts = async () => {
     try {
+      dispatch(requist())
       const response = await axios.get("https://dummyjson.com/products");
-      setProducts(response.data.products);
-      setLoading(false);
+      dispatch(success(response.data.products))
     } catch (error) {
       console.error("Error fetching products:", error);
-      setLoading(true);
+      dispatch(failure())
     }
   };
 

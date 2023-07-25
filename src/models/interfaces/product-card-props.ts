@@ -17,3 +17,9 @@ export interface ProductCardProps {
   product: Product,
   onClick: () => void;
 }
+
+export interface ProductState{
+  products: Product[];
+  loading: boolean;
+  error: string;
+}

@@ -1,37 +1,28 @@
 import { useParams } from "react-router-dom";
-import { Product } from "../models/interfaces/product-card-props";
+import { Product, ProductState } from "../models/interfaces/product-card-props";
 import { Button, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { useSelector } from 'react-redux';
 
 const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
+
+  const loading = useSelector((state: ProductState)=> state.loading);
+  const error = useSelector((state: ProductState)=> state.error);
+  const products: Product[] = useSelector((state: ProductState)=>state.products);
 
   useEffect(() => {
-    getProduct();
-  }, [id]);
-
-  const getProduct = async () => {
-    await axios
-      .get(`https://dummyjson.com/products/${id}`)
-      .then((response) => {
-        setProduct(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setLoading(true);
-        console.error("Error fetching product details:", error);
-      });
-  };
+    const foundProduct = products.find((product) => product.id === Number(id));
+    setProduct(foundProduct || null);
+  }, [id, products]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  if (!product) {
-    return <div>Product not found!</div>;
+  if (!product || error) {
+    return <div>Having trouble finding the product!! Please try again later</div>;
   }
 
   return (
